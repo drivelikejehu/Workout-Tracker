@@ -29,7 +29,9 @@ app.get("/api/workouts", (req, res) => {
 });
 
 app.put("/api/workouts/:id", (req, res) => {
-  db.Workout.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  db.Workout.findByIdAndUpdate(req.params.id, {
+    $push: {exercises: req.body},
+  }, { new: true })
     .then(workoutDb => {
       res.json(workoutDb);
     })
@@ -39,6 +41,7 @@ app.put("/api/workouts/:id", (req, res) => {
 });
 
 app.post("/api/workouts", (req, res) => {
+  console.log(req.body);
   db.Workout.create(req.body)
   .then(workoutDb => {
     res.json(workoutDb);
@@ -66,14 +69,6 @@ app.get("/exercise", (req, res) => {
 app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/stats.html"));
 });
-
-
-// app.get("/exercise?", (req, res) => {
-//   db.Workout.findById({
-//     _id: req.params.id
-//   })
-// })
-
 
 app.listen(PORT, () => {
   console.log(`App running on http://localhost:${PORT}`);
