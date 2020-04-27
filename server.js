@@ -19,8 +19,10 @@ app.use(express.static("public"));
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
 const apiController = require("./controllers/apiController");
+const htmlController = require("./controllers/htmlController");
 
 app.use(apiController);
+app.use(htmlController);
 
 app.get("/exercise", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/exercise.html"));
